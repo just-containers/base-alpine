@@ -1,4 +1,4 @@
-FROM alpine:3.3
+FROM quay.io/justcontainers/base-alpine-without-s6:v3.3
 MAINTAINER John Regan <john@jrjrtech.com>
 
 ##
