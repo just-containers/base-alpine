@@ -9,10 +9,10 @@ MAINTAINER John Regan <john@jrjrtech.com>
 COPY rootfs /
 
 # s6 overlay
-RUN apk add --no-cache curl \
- && curl -L -s https://github.com/just-containers/s6-overlay/releases/download/v1.18.1.5/s6-overlay-amd64.tar.gz \
-  | tar xvzf - -C / \
- && apk del --no-cache curl
+RUN apk add --no-cache curl grep sed \
+ && curl -LOk `curl --silent https://api.github.com/repos/just-containers/s6-overlay/releases/latest | /usr/bin/awk '/browser_download_url/ { print $2 }' | /usr/bin/grep 'amd64.tar.gz"' | /usr/bin/sed 's/"//g'` \
+		| tar xvzf - -C / \
+	&& apk del --no-cache curl grep sed 
 
 ##
 ## INIT
