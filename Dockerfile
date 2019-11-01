@@ -1,21 +1,19 @@
 FROM alpine:3.10.3 AS s6-alpine
 MAINTAINER John Regan <john@jrjrtech.com>
 
-##
-## ROOTFS
-##
+ARG S6_OVERLAY_RELEASE=https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-amd64.tar.gz
+ENV S6_OVERLAY_RELEASE=${S6_OVERLAY_RELEASE}
 
-# root filesystem
-COPY rootfs /
+ADD rootfs /
 
-# s6 overlay
-RUN apk add --no-cache curl \
- && curl -L -s https://github.com/just-containers/s6-overlay/releases/download/v1.18.1.5/s6-overlay-amd64.tar.gz \
-  | tar xvzf - -C / \
- && apk del --no-cache curl
+# s6 overlay Download
+ADD ${S6_OVERLAY_RELEASE} /tmp/s6overlay.tar.gz
 
-##
-## INIT
-##
+# Build and some of image configuration
+RUN apk upgrade --update --no-cache \
+    && rm -rf /var/cache/apk/* \
+    && tar xzf /tmp/s6overlay.tar.gz -C / \
+    && rm /tmp/s6overlay.tar.gz
 
+# Init
 ENTRYPOINT [ "/init" ]
