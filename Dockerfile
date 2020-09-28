@@ -1,4 +1,4 @@
-FROM alpine:3.10.3 AS s6-alpine
+FROM alpine:3.12.0 AS s6-alpine
 LABEL maintainer="Aleksandar Puharic xzero@elite7haers.net"
 
 ARG S6_OVERLAY_RELEASE=https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-amd64.tar.gz
